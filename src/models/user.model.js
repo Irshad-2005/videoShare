@@ -28,7 +28,6 @@ const userSchema = new Schema(
         },
         coverImage: {
             type: String, // cloudinary
-            require: true,
         },
         password: {
             type: String,

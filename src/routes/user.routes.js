@@ -4,6 +4,12 @@ import {
     logInUser,
     logOutUser,
     updateRefreshTokenUser,
+    changeUserPassword,
+    updateUserAccountDetail,
+    updateUserAvatar,
+    getUserProfile,
+    updateUserCoverImage,
+    getUserChannelProfile,
 } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { auth } from "../middlewares/auth.middleware.js";
@@ -30,4 +36,18 @@ router.route("/logout").post(auth, logOutUser);
 
 router.route("/refresh-token").post(updateRefreshTokenUser);
 
+router.route("/change-password").patch(auth, changeUserPassword);
+
+router.route("/update-profile").patch(auth, updateUserAccountDetail);
+
+router.route("/profile").get(auth, getUserProfile);
+
+router
+    .route("/update-avatar")
+    .patch(auth, upload.single("avatar"), updateUserAvatar);
+
+router
+    .route("/update-coverImage")
+    .patch(auth, upload.single("coverImage"), updateUserCoverImage);
+router.route("/channel-profile").get(auth, getUserChannelProfile);
 export default router;

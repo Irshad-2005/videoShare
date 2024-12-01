@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import { ApiError } from "./ApiError.js";
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -24,4 +25,17 @@ const uploadOnCloudinary = async (localFilePath) => {
     }
 };
 
-export { uploadOnCloudinary };
+const deleteOnCloudinary = async (url) => {
+    if (!url) {
+        throw new ApiError(500, "deletion url are not present");
+    }
+    const deleteURL = url.split("/").pop().split(".")[0];
+    const deletion = await cloudinary.uploader.destroy(deleteURL, {
+        type: "upload",
+        resource_type: "image",
+    });
+
+    console.log(deletion);
+};
+
+export { uploadOnCloudinary, deleteOnCloudinary };

@@ -14,4 +14,4 @@ const subscriptionSchema = new Schema(
     }
 );
 
-export const Subscrition = model("Subscription", subscriptionSchema);
+export const Subscription = model("Subscription", subscriptionSchema);

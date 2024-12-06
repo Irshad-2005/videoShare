@@ -6,6 +6,7 @@ import { uploadOnCloudinary, deleteOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
+import mongoose from "mongoose";
 
 const options = { httpOnly: true, secure: true };
 
@@ -389,11 +390,13 @@ const getUserChannelProfile = asyncHandlers(async (req, res) => {
     // lookup subscriptions model and get subscribers
     // lookup subscriptions model and get subscribedTo
 
-    const currentUser = req.user;
-
+    const { username } = req.params;
+    console.log(username);
     const channel = await User.aggregate([
         {
-            $match: { username: currentUser.username },
+            $match: {
+                username,
+            },
         },
         {
             $lookup: {
@@ -422,7 +425,7 @@ const getUserChannelProfile = asyncHandlers(async (req, res) => {
                 isSubsribedTo: {
                     $cond: {
                         if: {
-                            $in: [currentUser._id, "$subscribers.subscriber"],
+                            $in: [req?._id, "$subscribers.subscriber"],
                         },
                         then: true,
                         else: false,
@@ -443,7 +446,7 @@ const getUserChannelProfile = asyncHandlers(async (req, res) => {
             },
         },
     ]);
-
+    console.log(channel);
     if (!channel?.length) {
         res.status(404).json(new ApiError(404, "username are not found"));
     }
@@ -459,6 +462,63 @@ const getUserChannelProfile = asyncHandlers(async (req, res) => {
             )
         );
 });
+const getWatchHistory = asyncHandlers(async (req, res) => {
+    // match userId
+    // add lookup to video model and get video
+    //add sublookup and get onwer
+
+    const user = await User.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(req.user._id),
+            },
+        },
+        {
+            $lookup: {
+                from: "videos",
+                localField: "watchHistory",
+                foreignField: "_id",
+                as: "watchHistory",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "user",
+                            localField: "owner",
+                            foreignField: "_id",
+                            as: "owner",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        fullName: 1,
+                                        username: 1,
+                                        avatar: 1,
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        $addFields: {
+                            owner: {
+                                $first: "$owner",
+                            },
+                        },
+                    },
+                ],
+            },
+        },
+    ]);
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                user[0].watchHistory,
+                "user fetched sucessfull watchHistory"
+            )
+        );
+});
 export {
     userRegiter,
     logInUser,
@@ -470,4 +530,5 @@ export {
     updateUserCoverImage,
     getUserProfile,
     getUserChannelProfile,
+    getWatchHistory,
 };

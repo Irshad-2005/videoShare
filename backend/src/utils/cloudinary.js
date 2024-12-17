@@ -12,6 +12,7 @@ const uploadOnCloudinary = async (localFilePath) => {
         // upload the file on cloudinary
         const uploadResult = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto",
+            folder: "videoshare",
         });
         // file uploaded successfully
         console.log("file is uploaded cloudinary" + uploadResult.url);
@@ -30,9 +31,11 @@ const deleteOnCloudinary = async (url) => {
         throw new ApiError(500, "deletion url are not present");
     }
     const deleteURL = url.split("/").pop().split(".")[0];
+    console.log(deleteURL);
     const deletion = await cloudinary.uploader.destroy(deleteURL, {
         type: "upload",
         resource_type: "image",
+        folder: "videoshare",
     });
 
     console.log(deletion);

@@ -41,7 +41,7 @@ const userRegiter = asyncHandlers(async (req, res) => {
 
     const { username, fullName, email, password } = req.body;
 
-    registerValidator(req);
+     registerValidator(req);
 
     const existsUser = await User.findOne({
         $or: [({ email: email }, { username: username })],

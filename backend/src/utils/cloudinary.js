@@ -35,7 +35,6 @@ const deleteOnCloudinary = async (url) => {
     const deletion = await cloudinary.uploader.destroy(deleteURL, {
         type: "upload",
         resource_type: "image",
-        folder: "videoshare",
     });
 
     console.log(deletion);

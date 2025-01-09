@@ -66,8 +66,8 @@ const getVideoById = asyncHandlers(async (req, res) => {
 
 const updateVideo = asyncHandlers(async (req, res) => {
     const { videoId } = req.params;
-    const { title, description, thumbnail } = req.body;
-    //TODO: update video details like title, description, thumbnail
+    const { title, description } = req.body;
+    //FIXME: update video details like title, description, thumbnail
     // find the videoId in req params and validate
     // find video to videoId
     // find all update details in req

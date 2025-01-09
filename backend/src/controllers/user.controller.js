@@ -1,4 +1,5 @@
 import asyncHandlers from "../utils/asyncHandlers.js";
+
 import { registerValidator } from "../utils/validator.js";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";

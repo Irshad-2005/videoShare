@@ -1,29 +1,30 @@
 import { Schema, model } from "mongoose";
 
-const playListsSchema = new Schema(
-    {
-        name: {
-            type: String,
-            require: true,
-        },
-        description: {
-            type: String,
-            require: true,
-        },
-        video: {
-            type: Schema.Types.ObjectId,
-            ref: "video",
-            require: true,
-        },
-        onwer: {
-            type: Schema.Types.ObjectId,
-            ref: "user",
-            require: true,
-        },
-    },
-    {
-        timestamps: true,
-    }
+const playListSchema = new Schema(
+      {
+            name: {
+                  type: String,
+                  require: true,
+            },
+            description: {
+                  type: String,
+                  require: true,
+            },
+            videos: [
+                  {
+                        type: Schema.Types.ObjectId,
+                        ref: "video",
+                  },
+            ],
+            onwer: {
+                  type: Schema.Types.ObjectId,
+                  ref: "user",
+                  require: true,
+            },
+      },
+      {
+            timestamps: true,
+      }
 );
 
-export const PlayLists = model("PlayLists", playListsSchema);
+export const PlayList = model("PlayList", playListSchema);

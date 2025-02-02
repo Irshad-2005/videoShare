@@ -7,7 +7,7 @@ function App() {
   
  const fetchData = async ()=>
  {
-          const res = await axios.get("/api/healtchecks/");
+          const res = await axios.get("/api/v1/healthchecks/");
           
           console.log(res.data)
 
@@ -20,7 +20,7 @@ function App() {
 
   return (
       <div>
-            <h1>Video share project frontend part</h1>
+            <h1>Video share project frontend part </h1>
       </div>
   )
 }

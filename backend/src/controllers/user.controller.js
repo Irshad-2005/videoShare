@@ -1,5 +1,4 @@
 import asyncHandlers from "../utils/asyncHandlers.js";
-
 import { registerValidator } from "../utils/validator.js";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -415,7 +414,8 @@ const getUserChannelProfile = asyncHandlers(async (req, res) => {
 						if: {
 							$in: [req?._id, "$subscribers.subscriber"],
 						},
-						$then: true,
+						
+						then: true,
 						else: false,
 					},
 				},

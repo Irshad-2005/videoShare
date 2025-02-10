@@ -1,28 +1,12 @@
-import axios  from "axios"
-
-import './App.css'
-import { useEffect } from "react"
+import Header from "./components/Header";
+import "./App.css";
 
 function App() {
-  
- const fetchData = async ()=>
- {
-          const res = await axios.get("/api/v1/healthchecks/");
-          
-          console.log(res.data)
-
- }
-  useEffect(()=>
-  {
-     fetchData()
-  },[]);
-  
-
-  return (
-      <div>
-            <h1>Video share project frontend part </h1>
-      </div>
-  )
+    return (
+        <div className="bg-black/85 text-white/85 h-screen w-full overflow-hidden">
+            <Header />
+        </div>
+    );
 }
 
-export default App
+export default App;
